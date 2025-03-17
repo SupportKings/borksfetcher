@@ -1,13 +1,12 @@
 # Email Fetcher API
 
-This is a simple API that fetches sender emails from send.borks.io. It's designed to be deployed on Netlify.
+This is a simple API that fetches sender emails from send.borks.io. It's designed to be deployed on Deno Deploy.
 
 ## Local Development
 
-1. Install dependencies:
-```bash
-npm install
-```
+1. Install Deno:
+   - macOS/Linux: `curl -fsSL https://deno.land/x/install/install.sh | sh`
+   - Windows: `iwr https://deno.land/x/install/install.ps1 -useb | iex`
 
 2. Create a `.env` file in the root directory and add your API key:
 ```bash
@@ -16,47 +15,39 @@ BORKS_API_KEY=your_api_key_here
 
 3. Run the development server:
 ```bash
-npm run dev
+deno task dev
 ```
 
-4. For Netlify local development:
-```bash
-npm run netlify-dev
-```
+## Deployment to Deno Deploy
 
-## Deployment to Netlify
-
-### Option 1: Deploy via Netlify CLI
-
-1. Install Netlify CLI:
-```bash
-npm install -g netlify-cli
-```
-
-2. Login to Netlify:
-```bash
-netlify login
-```
-
-3. Initialize and deploy the project:
-```bash
-netlify init
-netlify deploy --prod
-```
-
-### Option 2: Deploy via Netlify UI
+### Option 1: Deploy via GitHub
 
 1. Push your code to a GitHub repository.
 
-2. Log in to Netlify and click "New site from Git".
+2. Go to [Deno Deploy](https://dash.deno.com/) and create a new project.
 
-3. Select your repository and configure the build settings:
-   - Build command: Leave empty (no build command needed)
-   - Publish directory: `public`
+3. Link your GitHub repository and select the `main.ts` file as the entry point.
 
-4. Add your environment variable in the Netlify dashboard:
-   - Go to Site settings > Build & deploy > Environment
+4. Add your environment variable in the Deno Deploy dashboard:
+   - Go to Project Settings > Environment Variables
    - Add `BORKS_API_KEY` with your API key
+
+### Option 2: Deploy via CLI
+
+1. Install Deployctl:
+```bash
+deno install --allow-read --allow-write --allow-env --allow-net --allow-run --no-check -r -f https://deno.land/x/deploy/deployctl.ts
+```
+
+2. Login to Deno Deploy:
+```bash
+deployctl login
+```
+
+3. Deploy the project:
+```bash
+deployctl deploy --project=your-project-name main.ts
+```
 
 ## API Endpoints
 
@@ -64,5 +55,4 @@ netlify deploy --prod
 
 ## Environment Variables
 
-- `BORKS_API_KEY`: Your API key for send.borks.io
-- `PORT`: (Optional) Port number for local development (defaults to 3000) 
+- `BORKS_API_KEY`: Your API key for send.borks.io 
