@@ -1,6 +1,6 @@
 # Email Fetcher API
 
-This is a simple API that fetches sender emails from send.borks.io. It's designed to be deployed on Vercel.
+This is a simple API that fetches sender emails from send.borks.io. It's designed to be deployed on Netlify.
 
 ## Local Development
 
@@ -19,26 +19,43 @@ BORKS_API_KEY=your_api_key_here
 npm run dev
 ```
 
-## Deployment to Vercel
-
-1. Install Vercel CLI:
+4. For Netlify local development:
 ```bash
-npm i -g vercel
+npm run netlify-dev
 ```
 
-2. Login to Vercel:
+## Deployment to Netlify
+
+### Option 1: Deploy via Netlify CLI
+
+1. Install Netlify CLI:
 ```bash
-vercel login
+npm install -g netlify-cli
 ```
 
-3. Deploy the project:
+2. Login to Netlify:
 ```bash
-vercel
+netlify login
 ```
 
-4. Add your environment variable in the Vercel dashboard:
-   - Go to your project settings
-   - Navigate to the "Environment Variables" tab
+3. Initialize and deploy the project:
+```bash
+netlify init
+netlify deploy --prod
+```
+
+### Option 2: Deploy via Netlify UI
+
+1. Push your code to a GitHub repository.
+
+2. Log in to Netlify and click "New site from Git".
+
+3. Select your repository and configure the build settings:
+   - Build command: Leave empty (no build command needed)
+   - Publish directory: `public`
+
+4. Add your environment variable in the Netlify dashboard:
+   - Go to Site settings > Build & deploy > Environment
    - Add `BORKS_API_KEY` with your API key
 
 ## API Endpoints
