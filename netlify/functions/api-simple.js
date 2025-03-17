@@ -1,26 +1,38 @@
 require('dotenv').config();
-const express = require('express');
 const axios = require('axios');
-const cors = require('cors');
-const serverless = require('serverless-http');
 
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-// Simple handler for all routes
-app.get('*', async (req, res) => {
+exports.handler = async function(event, context) {
   try {
     const allData = await fetchAllSenderEmails();
-    res.json(allData);
+    
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'GET'
+      },
+      body: JSON.stringify(allData)
+    };
   } catch (error) {
-    res.status(500).json({ 
-      success: false, 
-      error: error.message 
-    });
+    console.error('Error:', error);
+    
+    return {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'GET'
+      },
+      body: JSON.stringify({ 
+        success: false, 
+        error: error.message 
+      })
+    };
   }
-});
+};
 
 async function fetchAllSenderEmails() {
   const config = {
@@ -55,7 +67,4 @@ async function fetchAllSenderEmails() {
     recordCount: allData.length,
     data: allData
   };
-}
-
-// Export the serverless function
-module.exports.handler = serverless(app); 
+} 
