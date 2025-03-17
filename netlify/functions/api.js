@@ -5,11 +5,26 @@ const cors = require('cors');
 const serverless = require('serverless-http');
 
 const app = express();
+const router = express.Router();
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/', async (req, res) => {
+// Handle both root path and any other path
+router.get('/', async (req, res) => {
+  try {
+    const allData = await fetchAllSenderEmails();
+    res.json(allData);
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
+
+// Catch-all route to handle any path
+router.get('*', async (req, res) => {
   try {
     const allData = await fetchAllSenderEmails();
     res.json(allData);
@@ -55,6 +70,9 @@ async function fetchAllSenderEmails() {
     data: allData
   };
 }
+
+// Use the router
+app.use('/.netlify/functions/api', router);
 
 // Export the serverless function
 module.exports.handler = serverless(app); 

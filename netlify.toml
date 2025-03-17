@@ -7,6 +7,13 @@
   publish = "public"
   port = 8888
 
+# Redirect /api to the Netlify function
+[[redirects]]
+  from = "/api"
+  to = "/.netlify/functions/api"
+  status = 200
+
+# Redirect /api/* to the Netlify function
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"
